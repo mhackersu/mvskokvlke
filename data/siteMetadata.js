@@ -3,7 +3,7 @@ const siteMetadata = {
   title: 'mvskokvlke dot com',
   author: 'Mike Hacker',
   headerTitle: 'An indigenous take on all things cyber',
-  description: 'Improving indigenous outcomes',
+  description: 'Improving indigenous outcomes in cyberspace',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
