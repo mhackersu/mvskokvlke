@@ -1,1 +1,12 @@
-{}
+{
+  "microservices": 2,
+  "risks": 1,
+  "development-velocity": 1,
+  "security": 2,
+  "platform-maturity": 1,
+  "innovation": 1,
+  "efficiency": 1,
+  "shift-left": 1,
+  "service-maturity": 1,
+  "operational-efficiency": 1
+}
