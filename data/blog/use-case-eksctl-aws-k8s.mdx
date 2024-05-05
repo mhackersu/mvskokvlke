@@ -1,0 +1,50 @@
+---
+title: Use case; Using eksctl to create an EKS cluster
+date: '2022-09-01'
+tags: ['k8s', 'aws', 'eks']
+draft: false
+summary: Setting up a k8s cluster in AWS the smart way.
+---
+
+Use case. We want to practice deploying applications to Kubernetes. Step one. We are going to need to obtain access to a cluster.
+
+We could build something locally on a VM but it might be kinda bulky and performance might suffer. We could build it on bare metal, or BaaS, and solve for the performance, but it’s going to get expensive, and then we’ll have a full-time job just maintaining the infrastructure. We could use something locally, like Kind, but downloading container images might bring our wi-fi down. If we want to focus on learning and not introducing complexities that will inhibit our learning, we should choose something managed. In my case, I choose EKS. Sure I could have chosen AKS, or GKS, or something k3s flavored, but I choose EKS. After previewing all of these choices, I decided EKS was the best mix of price and performance from a managed service. That said, since we’ll be jumping into this article with the EKS lean, it makes sense to get the dependencies installed.
+
+Following the AWS guide here.
+
+Install kubectl
+
+which kubectl
+kubectl version | grep Client | cut -d : -f 5
+
+# Latest Release
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+
+Install eksctl
+
+eksctl version
+brew tap weaveworks/tap
+brew upgrade eksctl && brew link --overwrite eksctl
+
+What is eksctl?
+
+eksctl is built by Amazon and Weaveworks and it is an open source tool for quickly creating EKS clusters via command line interface. It is written in Go and based on Amazon EKS Getting Started CloudFormation templates.
+
+Similar to kops, kubicorn, and kubectl, eksctl is simply a CLI for managing Kubernetes.
+
+eksctl create cluster
+
+Creating a Fargate cluster is the logical choice here because we will be deploying Kubernetes pods to a serverless compute engine and we don’t have time to manage Amazon EC2 instances.
+
+eksctl create cluster --name my-cluster --region region-code
+
+This command will do the following:
+
+First, it will create an IAM (AWS Identity and Access Management) role used to allow the master control plane to connect to EKS
+
+Next, it will then create the base Amazon VPC architecture, and then the master control plane.
+
+Once the control plane is active, it will create a node group to bring up instances, then deploy the ConfigMap that allows the nodes to join the cluster.
+
+Finally, it will create a pre-configured kubeconfig that will give you access to the cluster.

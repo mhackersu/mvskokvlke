@@ -1,0 +1,230 @@
+---
+title: SRE Prespective; Q3 2022 Edition
+date: '2022-09-01'
+tags: ['sre', 'cybersecurity', 'slsa', 'nist', 'ssdf', 'eo 14028']
+draft: false
+summary: The current state of SRE as I personally know it in late-2022 with a native blessing.
+---
+
+# From an SREs Perspective (Q3 2022 Edition)
+
+This article was originally titled **_how to unlock innovation bottlenecks with supply chain levels of software artifacts and ephemeral environments_** but I had to confirm to myself that the topic was so immense, that I would not do it justice to limit my presentation to one ingress and one slice in time, so I decided to instead nest the entire discussion under a series of posts titled Current State of Site Reliability Engineering - From an SRE Practitioner’s Perspective.
+
+In this article, I will be briefly discussing a couple of new security frameworks and how these frameworks, combined with ephemeral environments, can amp up the DevX. I’ll share some thoughts on the recently introduced Supply chain Level for Software Artifacts (SLSA) by Google, the Secure Software Development Framework (SSDF) as per Executive Order (EO) 14028 and NIST 800-218, and I’ll share a note about CyberSecurity in general and the intersection of SSDF and SLSA. Lastly, I’ll wrap up about what these things have in common and how an engineering organization can benefit from the implementation thereof.
+
+Enjoy! 🙂
+
+### Present State
+
+The current state of SRE work, as I personally know it, and to what I think in a reasonable tone, still largely exists to automate mundane things away. SRE work, in and of itself, is very mundane; In some cases, the SRE is present to function in triage efforts, providing a meta-layer of analysis about the nature of the assist.
+
+> SRE’s are always thinking in terms of scale, so there is this constant discovery process happening.
+
+_There seems to be a general vibe in the industry that SRE involves doing quite a bit of Ops work, but there is also a vibe that is more theoretical in terms of thinking._
+
+### Hypothesis
+
+From a very broad and computer software engineering perspective, “fixing defects in production environments” is very much a BAU (Business as Usual) scenario in any given “modern” enterprise.
+
+### **Thesis**
+
+IBM and Google have both stated in previous research, that the order of magnitude for cost, in terms of fixing defects in production is approximately an order of 100 times the cost.
+
+### Theory
+
+Reducing waste by not fixing defects in production, increasing overall efficiencies with supply chain levels for software artifacts, unlocking innovation delivery bottlenecks with leadership that leans on candid vulnerability, empowering engineers to own the products they create, enabling a positive developer experience by offering ephemeral development environments as a perk, and
+
+### Preface
+
+Cloud native and Server-less methodologies _(if I can call those things that)_, contain a ton of alignment on the practices and principles that I speak hereof. I like to think SLSA has its roots in SDLC, of which I have been a long proponent thereof. It has always made good sense for me to write things down, with vigor, so that when I come back to the subject, I may remember what on earth I was even meandering on about. I don’t think of SDLC much more than writing things down, in good order, but rather I think of it as more sophisticated manner just like widgets coming off an assembly line, each one, with it’s unique serial number, manufactured perfectly, or “to spec”, and ready for packaging and on the way it goes to the customer! I often think of software this way, perhaps it was the first book that I had ever really sat down and read on the subject, The Goal, by Goldratt, but once I understood that documentation WAS automation, it all clicked for me, from that point on.
+
+### Intro Slash Brainstorming
+
+This very line of thinking ultimately involves the acceptance, from an SRE practitioners perspective, that the if the position itself were to be automated away, then this would be a good thing. What we learn when we embrace this understanding is that a re-alignment is happening in enterprises where the business crowd and the IT crowd are starting to align with Agile methods across the board; This is such a good thing, as this will ultimately align product delivery cadence — speaking from the perspective of a code shop or an enterprise that uses some technology in their product and is invested therein in terms of engineering, research, and development. We are seeing new ways this alignment is manifesting — the way of self-forming teams, and micro-enterprises, etc.
+
+Looking at 20 years from now, knowing that at that point, software delivery will look very different. Continuing to push the bar in terms of managing production environments, there is a good portion of SRE that exists to solve the pipeline bottlenecks and security vulnerabilities that exist, however there is another portion of SRE that exists to solve the bigger problem, or in other words, aims to fix the problem in a preferential manner of “the right way” vs “right now”.
+
+Perhaps this is central to ones interpretation of MTTR. That might be a good place to start. Or how, by measuring the quantity and ratio of interrupt work in comparison to planned work, we might be able to predict the stability of an enterprise’s SRE efforts, and how likely those efforts are likely to succeed or fail. Other discussions could be postulated as well, things like the average of all application maturity indexes across an entire SoA stack, as a key indicator for engineering quality and a possibly useful indicator in terms of the overall engineering health of an organization.
+
+At the very center of this conversation, sits the predecessor to Kubernetes; Google’s cluster manager, Borg. With traditional VM environments, companies might utilize somewhere around 10% of total resources. This is done to allow room for growth, but this legacy-VM introduces risk-vectors. Kubernetes solves this problem. The engineering community has responded with Cloud Native technology which teams have rushed to implement, so now we have a mix of abandoned tech, new tech, and legacy tech.
+
+Spotify Backstage conducted research in this area and had proposed a measurement of time to tenth MR/PR as a measurement of developer experience; I love how the Backstage team really pushed the bar there - I had chatted a bit with Komodor for a POC I was conducting at the current company I had been working at. We had brainstormed a bit and we were utilizing a similar metric but only time to first PR/MR. I really love the creative thinking behind the idea of measuring not the first but the tenth; It truly seems like a much more mature metric and I will likely use that going forward.
+
+## Chapter 1
+
+### Fixing Defects in Production is Expensive
+
+### **TL;DR**
+
+Fixing defects in production is the most expensive realm in which to fix defects; More specifically, the research from Google and IBM have similar conclusions - That the expense is an order of magnitude of 100. The short and sweet interpretation is that what ever the software cost to manufacture in dev, just multiple that cost by 100. So if the total effort was 500 hours times, let’s say an senior-level FTE hourly of $100, that yields $50,000, so the cost to fix the defect in production is in upwards of $5M. That seems a bit ludicrous, but if missed sales opportunities are in the mix because of an outage, or even worse, loss of brand reputation, it’s not so hard to imagine how those numbers are even close to accurate, yet it would not be far fetched to toss a ball and land in an IT enterprise wrestling with the very issue. Maybe this could be a nation-wide survey? It really depends how well we are filtering for response bias. Here is where candid vulnerability really delivers. The health of an organization could largely depends on how well it does this. Fortunately, SLSA exists and we can measure an engineering organizations health with the sum of the supply chain levels across all of the products and services. This sum gives us an index by which to better understand how we can improve, where we can reduce waste, and ultimately serves as a gap analysis providing teams greatly enhanced visibility into where attention is needed in the planning processes.
+
+### SLSA
+
+[SLSA](https://slsa.dev/) refers to Supply Chain Levels for Software Artifacts. "It’s a security framework, a check-list of standards and controls to prevent tampering, improve integrity, and secure packages and infrastructure in your projects, businesses or enterprises. It’s how you get from safe enough to being as resilient as possible, at any link in the chain," according to the [SLSA website](https://slsa.dev/).
+
+### How SLSA related to engineering quality?
+
+SLSA is a bit like the missing manual or handbook for GitOps. There are a variety of different options of various implementations in the area of release automation, more specifically, continuous integration, and continuous deployment. The SLSA framework allows us to zoom out a bit and see the bigger picture.
+
+### Ephemerial Environments
+
+> **Motto: “Treat your infrastructure as cattle, not pets”**
+
+I am working on the beginning stages of Foster CS. One of the problems I was attempting to solve for was how to fund the laptops for the foster childern that would be attending the computer science classes. Initially I was targeting the PineBook Pro as the primary NFR, with a Google ChromeBook as the “Nice to Have” NFR. When I discovered GitPod (and its [Google Chrome Extension!!!](https://chrome.google.com/webstore/detail/gitpod-always-ready-to-co/dodmmooeoklaejobgleioelladacbeki)), I knew we had solved for the “Nice to Have” scenerio, and I was excited!!
+
+My next steps are now to design the Foster CS courses around the GitPod ephermerial environments _(previously I had been planning to use JSBin — One of my long time favorites!)._ While I am sad to not be using JSBin for this project, JSBin will always have a special place in my heart.
+
+Typically speaking, local developer environments are difficult to set up and maintain and eat up productivity significantly.
+
+- Clone source code
+- Install runtimes & dependencies
+- Ensure correct versions are installed
+- Set up tooling
+
+The environment can possibly become more complex when reviewing features and hotfixes for production.
+
+- Stash current changes
+- Switch branches
+- Potentially install new runtimes or upgrade dependencies
+- Review the change
+- Switch back to previous branch
+- Get state back to where we left off and continue working
+
+_Ephemeral developer environments eliminate this friction; Now the developer must only look at the code, run it and approve the PR._
+
+Using ephemeral environments in the context of an enterprise engineering iniatiave has postive impact.
+
+- Onboarding
+- Developing Features
+- Reviewing a PR/MR
+- Code Review
+- Evaluating Open Source Projects
+
+### GitPod
+
+[This](https://github.com/gitpod-io/workspace-images) is a really fantastic environment. It is based on Ubuntu Linux and has a bunch of images (called chunks), bundled together. I tried it out today using VS Code with the GitPod and Remote-SSH extensions loaded. It was super neat that I could access such a well provisioned environment (Ruby, Node, Java, Rust, Go, Clojure, C, and Elixir) in a local IDE; This is exactly the environment I will be using for Foster CS.
+
+[https://github.com/gitpod-io/workspace-images](https://github.com/gitpod-io/workspace-images)
+
+### SDLC
+
+I am using SDLC here to refer to anything in the realm of SDLC, including SSDLC, SSDF, SSADM and other? What I think is important here is to look closely at NIST 800-218 titled ‘_The Secure Software Development Framework (SSDF): Recommendations for Mitigating the Risk of Software Vulnerabilities_’.
+
+<aside>
+🐂 *According to [Wikipedia, SDLC](https://www.notion.so/Ranking-software-packages-with-a-maturity-model-as-a-measurement-for-Engineering-Quality-b5120fe44bea42a193654e8c72cfdcb3?pvs=21) has been around since the 1960s, and was created for developing large-scale functional business systems in an age of large-scale comglomerates. When I first learned about SDLC, the main part that stood-out to me was the lifecycle part. I immediatly thought about life on the farm, tending to the lifecycle of the animals. Perhaps not too far fetched of an example when we consider the ephemerial environment motto.*
+
+</aside>
+
+Securing the SDLC is essential to minimizing the number of vulnerabilities that reach production and eliminating the data breaches, ransomware infections, and other security incidents that they cause. Generally speaking, development teams need security tools that integrate with their existing workflows and enable security automation. Unfortunately, security can be, and often times is, a roadblock to development because SDLC was implemented incorrectly , or is not implementated at all. This increases the likelyhood of bypassed security practices.
+
+**SDLC Best Practices**
+
+- Control access to code repositories, protect branches, use Git org-wide.
+- Require security integration for test cases and vulnerability scans in CI; Block insecure code from being committed to the repository.
+- Make security painless; Integrate application security testing, code reviews, and other security functionality into automated pipelines so that it runs seamlessly and without slowing down the development cycle.
+- Shift left; Integrate security early. It is dramatically less wasteful to address security issues in development cycles vs. cobbling together a patch in production.
+
+> Version 1.1 of The Secure Software Development Framework (SSDF): Recommendations for Mitigating the Risk of Software Vulnerabilities from NIST was just published on February 3rd, 2022. The document was first released In September of 2021, but the SSDF program first started in May 2021 after [Executive Order 14028](https://www.nist.gov/itl/executive-order-improving-nations-cybersecurity).
+
+I’m making some broad strokes here but one simple way of breaking this down is recognizing that Legacy SDLC addresses software security from a high-level perspective, whereas modern SDLC, now SSDF as per NIST 800-218, offers a more tatical approach. The secure practices are divided into four groups.
+
+- PO - Prepare the Organization
+- PS - Protect the Software
+- PW - Produce Well-Secured Software
+- RV - Respond to Vulnerabilities
+
+### CyberSecurity
+
+Cybersecurity is a subject that is vastly complex and multi-facated. Security control frameworks such as SLSA and SSDF exists to guide the user through a layered approach to implementing security controls. The quantity of security frameworks can seem overwhelming, but for this article, we’ll just focus on SLSA and SSDF.
+
+> Recently the rising threat of software supply chain attacks has put the integrity of software development in the spotlight. As organizations improve the security posture of their network and compute resources, threat actors are increasingly attacking the development and deployment stages of the software development life cycle. This trend has prompted a response by both government and private industry leaders. [Chainguard](https://blog.chainguard.dev/implementing-secure-software-supply-chain-security-controls-understanding-nist-ssdf-slsa-frameworks/)
+
+Google and the Open Source Security Foundation (OpenSSF) has responded to the growing threat of these attacks by creating a “Supply Chain Levels for Software Artifacts” (SLSA) framework.
+
+> This framework introduces concepts and steps to help secure the Software Development Lifecycle (SLDC), focusing on source code, dependencies/packages, and build-pipelines. [Lewandowski, Lodato, and Borg Team — 2021](https://security.googleblog.com/2021/06/introducing-slsa-end-to-end-framework.html)
+
+SLSA requirements can be categorized into four groups of requirements.
+
+- Source
+- Build
+- Provenance
+- Common
+
+SLSA _Summary Levels_
+
+| Level | Description                            | Example                                               |
+| ----- | -------------------------------------- | ----------------------------------------------------- |
+| 1     | Documentation of the build process     | Unsigned provenance                                   |
+| 2     | Tamper resistance of the build service | Hosted source/build, signed provenance                |
+| 3     | Extra resistance to specific threats   | Security controls on host, non-falsifiable provenance |
+| 4     | Highest levels of confidence and trust | Two-party review + hermetic builds                    |
+|       |                                        |                                                       |
+
+The degree of implementation of the requirements correspond with a SLSA summary level of compliance. Also, the individual requirements can have levels of implementation that affect the overall summary level.
+
+> NIST SSDF provides guidance at the organization’s secure software development life cycle level covering practices such as documentation, communications, roles & responsibilities, and other practices, whereas SLSA has a focus on providing guidance for securing source, build and deployment by providing provenance through attestation. The “mapping” between the two frameworks requires understanding the scope of each and takes a bit of interpretation. This type of exercise is not uncommon for Governance, Risk, Compliance (GRC) professionals, cybersecurity professionals, and auditors. Often enterprises need to understand how multiple frameworks, industry standards and regulations overlap or present gaps. - [Chainguard](https://blog.chainguard.dev/implementing-secure-software-supply-chain-security-controls-understanding-nist-ssdf-slsa-frameworks/)
+
+Regardless of mapping between SLSA and SSDF, it seems logical that we should utilize the summary levels as a measurement and a way to describe service maturity and pipe these values into a service catalog such OpsLevel _(or Backstage if your looking to roll your own)_. If we can sum these totals across the entire SoA footprint within an engineering organization, and if we can plot maturity index along a vertical axis while taking multiple measurements, over time, across a horizontal axis, then we would have a measure of quality of engineering health, over time; How novel!
+
+Well, that’s it for now; From A SRE Practitioner’s Perspective; I hope you join me next time!
+
+PS. Here are some additional topics I hope to cover next-ish.
+
+- Indepotent Infrastructure
+- Immutabile State of Deployment
+- Idomatic Processes (Documentation is Automation)
+- Cloud Native
+- Zero Trust
+- Self-forming teams
+- Outcome based planning
+- User-focused product planning with security and compliance NFRs baked in
+- E2E Ownership for Dev Teams
+- Silo Busting
+- Repair vs Resolve (an SRE intrepretation of MTTR)
+- How SRE Repairs & Resolves
+- Ephemeral Environments
+- Data Structures
+- Algorithms
+- General Programming
+- Code Quality
+- Secure Coding
+- Classic SecOps
+- RBAC
+- Shifting Left
+- Challanges with Self-Service
+- DevSecOps CI Ingerations
+- Expanding Right
+- Measuring DevX Effectiveness
+- Measuring Engineering Quality
+- Reducing Waste
+- Removing Bottlenecks for Innnovation
+- Decreasing Compliance Risk
+- Logarithmically Reducing Risk of Breach
+- Outward Looking (Defensive)
+- Inward Looking (Offensive)
+- White Hat Hacker
+- Gap Analysis - Disconnect between CISO & Engineering
+- Gap Analysis - Fixing defects in production
+- Offensive & Defensive Tactics
+- Measurements
+- Simplicity & Mental Models
+- Cognitive Overhead
+- Neurological Safety
+- Actual vs Precieved Safety
+- Personal Privacy vs Social Systems
+
+### Collaboration
+
+I would be thirlled if collaborators wanted to join this project. If you are looking to collaborate, open a PR on the book [here](https://github.com/bfs-io/banana-for-scale/tree/dev).
+
+### **Thank Yous & Shout Outs**
+
+There has been so much innovation in technology in general, and so quickly too, that it would be not fair to say that it is any one person or group of individuals that have caused this misalignment to happen. Even as a bit of perspective, if we were to evaluate the length of time that say eCommerce as a whole as been around, we’re really only been at it for a couple of decades. Within that span of time it would be difficult to summarize the level of innovation in the world of software, but in terms of developer experience, the fact that it is now officially a thing, in more than on way (huge shoutout to DevX Conf 2022), we are still very much in the early stages of a lot of things. Software delivery is not where it needs to be, the internet is riddled with exploits, code quality has never been more important, companies are doubling down on security, not just internal, but external audit too (shout out to Censys for striving to make the internet a safe place again). There is so much game-changing happening right now and really I have to think, is my input even valuable here? Well, I not only think it is, hence this blog post, but I so does my squad, and I have to give such a huge shoutout to my support network. I’m not going to drop any names here but you know who you are and each and every one of you are incredible people. Without your support and encouragement, none of this would have happened — It’s really incredible when your aligned with the universe — Incredible support shows up that is really overwhelmingly so! And thank you to my reader, you, for your attention span!
+
+### Resources
+
+[Beyond Identity - Secure SDLC Best Practices](https://www.beyondidentity.com/blog/secure-sdlc-best-practices)
+
+[Linux Foundation, Intro to SLSA](https://slsa.dev/spec/v0.1/index)
+
+[Chainguard - I read NIST 800-218 so you don’t have to](https://blog.chainguard.dev/i-read-nist-800-218-so-you-dont-have-to-heres-what-to-watch-out-for/)

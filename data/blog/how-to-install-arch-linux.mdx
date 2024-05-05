@@ -1,0 +1,266 @@
+---
+title: How to Install Arch Linux
+date: '2016-03-08'
+tags: ['linux', 'arch linux', 'guide', 'joy', 'computing']
+draft: false
+summary: Discover the joy of computing with Arch Linux!
+---
+
+Getting Started
+
+Set aside some time. Getting Arch going at first is somewhat of a complex set of procedures and success will be largely determined by the quantity of time and grit that you can muster to accomplish the task. As a pure open-source thing, there is a certain liberation from all the marketing jazz with products these days, that said, there is not an instruction manual per se, or any guarantees or warranties, Arch is very much a choose your own adventure type experience, there are just so many decisions to be made, there are just so many assumptions not made, that’s what makes it beautiful. Well that and how it manages dependencies and updates with pacman, but we’ll get into that more in a bit. There is something almost magic about how the community works; It’s really an incredible feat to experience that something like this could almost self-organize. I recommend getting comfortable with git and pacman and establishing a solid innate knowledge of those tools first, then jumping into AUR Helpers like Yet Another Yogurt yay which also happens to be written in Go.
+
+Arch is a stable Linux experience for a few reasons. Arch Linux does not really impose any opinions or preferences on the user experience, in fact it is quite the opposite, the user has to explicitly define everything. This is where Arch Linux can seem to have a steep learning curve, initially, however, once the steep learning curve is complete, Arch Linux is not only a stable and reliable experience, but it can bring the joy of computing back to the user experience.
+
+Want to try it out for yourself? Great! Let’s get started!
+
+Later on, I’ll be posting on setting up video conferencing going, an audio app, calendar, email, web browser, password management for Arch. Sign up to get notified when I publish new content.
+
+Thanks for reading Banana For Scale! Subscribe for free to receive new posts and support my work.
+
+Let’s get started!
+
+First, download the Arch Linux ISO and create bootable USB drive.
+
+Second, boot from the USB and connect to the internet using iwctl
+
+iwctl --passphrase "PSK" station wlan0 connect "SSID"
+
+Storage
+
+sdX is a generic reference. Use your device name here. (eg.nvme0n1, etc.)
+
+Display Storage Devices
+
+$ lsblk
+
+-- and/or --
+
+$ fdisk -l
+
+Shred Storage Device
+
+$ shred -v -n1 /dev/sdX
+
+Partitioning Tools
+
+**_ Less Interactive _**
+$ gdisk /dev/sdX
+
+**_ More Interactive _**
+$ cfdisk /dev/sdX
+
+Partitions
+
+EFI System Partition
+
+/dev/sda1
+
+512 MB
+Partition Type - FAT32
+Space for boot loaders and other files required for booting.
+
+Swap Partition
+
+/dev/sda2
+
+4GB
+Partition Type - Linux Swap
+Swap space is used to extend the virtual memory beyond
+the installed physical memory (RAM) or for suspend-to-disk support.
+
+Linux Partition
+
+/dev/sda3
+
+Remaining size of disk
+Partition Type - Linux Filesystem
+This is the root (/) partition where Arch Linux operating system,
+files, and other information will live.
+
+Format Partitions
+
+sda1… is a generic reference. Use your device name here. (eg.nvme0n1, etc.)
+
+EFI Partition
+
+mkfs.fat -F32 /dev/sda1
+
+Swap Partition
+
+mkswap /dev/sda2
+swapon /dev/sda2
+
+Root Partition
+
+mkfs.ext4 /dev/sda3
+
+Install Distro
+
+Update Pacman
+
+# Update Package List
+
+pacman -Syy
+
+# Install Keyring
+
+pacman -Sy --needed archlinux-keyring
+
+Mount Root Partition
+
+mount /dev/sda3 /mnt
+
+Pacstrap
+
+pacstrap /mnt base base-devel linux linux-firmware vim
+
+Handy Utilities
+
+pacstrap /mnt iw iwd wpa_supplicant wireless_tools networkmanager dhcpcd
+
+Generate fstab
+
+mkdir /mnt/etc
+genfstab -U /mnt >> /mnt/etc/fstab
+cat /mnt/etc/fstab
+
+Switch to Installed Root Partition
+
+arch-chroot /mnt
+
+Locale Setup
+
+Timezone
+
+mkdir /etc/localtime
+ln -sf /usr/share/zoneinfo/US/Central /etc/localtime
+
+Setup Clock
+
+hwclock --systohc
+
+Setup Locale
+
+vim /etc/locale.gen
+
+en_US ISO-8859-1
+en_US.UTF-8 UTF-8
+
+Generate Locale Config File
+
+locale-gen
+
+Set LANG Variable
+
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+export LANG=en_US.UTF-8
+
+Set Hostname
+
+echo archy > /etc/hostname
+
+vim /etc/hosts
+127.0.0.1 localhost
+::1 localhost
+127.0.1.1 archy
+
+Set Root Password
+
+passwd
+
+Add User
+
+useradd -m -g users -s /bin/bash {username}
+passwd {username}
+
+visudo
+
+## User privilege specification
+
+root ALL=(ALL:ALL) ALL
+{username} ALL=(ALL:ALL) ALL
+
+exit
+login
+{username}
+pacman -Syy
+
+Bootloader
+
+# Install Grub Bootloader and EFI Boot Manager Packages
+
+pacman -S grub efibootmgr os-prober mtools
+
+# Create mount point for /dev/sda1 and mount
+
+mkdir /boot/efi
+mount /dev/sda1 /boot/efi
+
+# Install Bootloader
+
+grub-install --target=x86_64-efi --bootloader-id=grub_uefi
+
+# Generate grub.cfg
+
+grub-mkconfig -o /boot/grub/grub.cfg
+
+Reboot
+
+# Exit chroot
+
+exit
+
+# Unmount everything
+
+umount -R /mnt
+
+# Reboot
+
+shutdown now -r
+
+Configure Network
+
+Check Driver Status
+
+lspci -k | more
+
+Get the name of the interface
+
+iw dev
+
+Generate WPA Supplicant Config File
+
+wpa_passphrase MYSSID passphrase > /etc/wpa_supplicant/wpa_supplicant.conf
+
+---
+
+update_config=1
+network={
+ssid="SSID"
+psk="PSK"
+mesh_fwding=1
+}
+
+Start Services
+
+systemctl start dhcpcd.service
+systemctl start NetworkManager.service
+
+Display WiFi Networks
+
+nmcli device wifi list
+
+Connect to WiFi
+
+nmcli device wifi connect SSID password PSK
+
+Clearing up Errors
+
+# Package signature error when running pacstrap
+
+pacman -Sy --needed archlinux-keyring
+
+Source: https://bbs.archlinux.org/viewtopic.php?id=278518
+
+Thanks for reading Banana For Scale! Subscribe for free to receive new posts and support my work.
