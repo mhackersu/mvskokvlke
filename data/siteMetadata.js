@@ -6,8 +6,8 @@ const siteMetadata = {
   description: 'Improving indigenous outcomes in cyberspace',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
-  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
+  siteUrl: 'https://www.mvskokvlke.com/',
+  siteRepo: 'https://github.com/mhackersu/mvskokvlke',
   siteLogo: '/static/images/logo.png',
   socialBanner: '/static/images/mvskokvlke-x-card.jpg',
   mastodon: 'https://mastodon.social/@mastodonuser',
