@@ -1,0 +1,97 @@
+---
+title: OOP Basics with JS
+date: '2024-05-27'
+tags: ['oop', 'js', 'javascript']
+draft: false
+summary: Understanding the native JS functions map, filter, and reduce can help bridge the gap between functional programming and OOP, while providing a robust toolkit for managing and manipulating data in JavaScript.
+
+From an Object-Oriented Programming (OOP) standpoint, `map`, `filter`, and `reduce` in JavaScript cover several fundamental principles and patterns. Here’s a look at how these functions align with OOP concepts.
+---
+
+### Encapsulation
+
+Encapsulation is about bundling the data with the methods that operate on that data. In the context of `map`, `filter`, and `reduce`, arrays encapsulate both the data and the methods that manipulate the data. This allows you to work with arrays in a more abstract and higher-level way.
+
+#### Example:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const doubled = numbers.map((num) => num * 2) // `map` method is encapsulated within the array
+```
+
+### Abstraction
+
+Abstraction involves hiding the complex implementation details and exposing only the necessary parts. `map`, `filter`, and `reduce` abstract the iteration logic, providing a simpler and more declarative interface for common operations on arrays.
+
+#### Example:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const evenNumbers = numbers.filter((num) => num % 2 === 0) // Abstracts the loop and condition
+```
+
+### Polymorphism
+
+Polymorphism allows methods to be used on different types of objects or in different scenarios. While `map`, `filter`, and `reduce` are array-specific, their usage can be seen as a form of polymorphism where the same method (like `map`) can perform different transformations based on the provided callback function.
+
+#### Example:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const strings = ['1', '2', '3', '4']
+const doubledNumbers = numbers.map((num) => num * 2)
+const parsedStrings = strings.map((str) => parseInt(str, 10)) // Same method, different operations
+```
+
+### Higher-Order Functions
+
+While not strictly an OOP concept, higher-order functions are closely related to the idea of objects with methods (behaviors). `map`, `filter`, and `reduce` are higher-order functions because they take other functions (callbacks) as arguments.
+
+#### Example:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const squared = numbers.map(function (num) {
+  return num * num
+}) // Passing a function to `map`
+```
+
+### Reusability and Composition
+
+One of the OOP goals is to create reusable and composable code. `map`, `filter`, and `reduce` facilitate this by allowing you to define small, reusable functions that can be passed to these methods, enabling complex operations through function composition.
+
+#### Example:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const double = (num) => num * 2
+const isEven = (num) => num % 2 === 0
+const sum = (acc, num) => acc + num
+
+const result = numbers.map(double).filter(isEven).reduce(sum, 0) // Functions composed together
+```
+
+### Method Chaining
+
+Method chaining is a technique where multiple methods are called on the same object in a single statement. This is a pattern commonly seen in OOP and is facilitated by `map`, `filter`, and `reduce` returning new arrays or values, allowing chains of operations.
+
+#### Example:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const result = numbers
+  .map((num) => num * 2)
+  .filter((num) => num % 3 === 0)
+  .reduce((acc, num) => acc + num, 0) // Chaining methods together
+```
+
+### Conclusion
+
+In summary, `map`, `filter`, and `reduce` embody several core OOP principles:
+
+- **Encapsulation**: Arrays encapsulate data and related operations.
+- **Abstraction**: They abstract the iteration and transformation logic.
+- **Polymorphism**: They can perform different operations based on the provided callbacks.
+- **Higher-Order Functions**: They take functions as arguments, enabling flexible behavior.
+- **Reusability and Composition**: They promote the use of small, reusable functions and function composition.
+- **Method Chaining**: They support method chaining for clean, readable code.
