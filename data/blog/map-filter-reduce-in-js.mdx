@@ -3,8 +3,79 @@ title: Using Native Functions in JS
 date: '2024-05-27'
 tags: ['js', 'javascript', 'native functions', 'functional programming']
 draft: false
-summary: While `map`, `filter`, and `reduce` are powerful tools in JavaScript, they are not without their drawbacks. Being aware of their potential performance issues, readability challenges, and the need for functional programming knowledge is important. Developers should use these methods judiciously, considering the specific context and requirements of their code.
+summary: Understanding the native functions `map`, `filter`, and `reduce` in JavaScript is crucial for several reasons, including improving code readability, enhancing functional programming skills, and writing more efficient and concise code. Here’s a detailed explanation of each function and their importance as well as some drawbacks.
 ---
+
+### `map`
+
+#### Description:
+
+- **Purpose**: Transforms each element in an array and returns a new array with the transformed elements.
+- **Syntax**: `array.map(callback(element[, index[, array]])[, thisArg])`
+
+#### Usage:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const doubled = numbers.map((num) => num * 2)
+console.log(doubled) // [2, 4, 6, 8]
+```
+
+#### Importance:
+
+1. **Immutability**: `map` returns a new array, leaving the original array unchanged, promoting immutability which is a core principle in functional programming.
+2. **Clarity**: It provides a clear and concise way to apply a transformation to each element in an array, making the code more readable and expressive.
+
+### `filter`
+
+#### Description:
+
+- **Purpose**: Creates a new array with all elements that pass a test implemented by the provided function.
+- **Syntax**: `array.filter(callback(element[, index[, array]])[, thisArg])`
+
+#### Usage:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const evenNumbers = numbers.filter((num) => num % 2 === 0)
+console.log(evenNumbers) // [2, 4]
+```
+
+#### Importance:
+
+1. **Selective Processing**: `filter` allows for easy selection of elements that meet certain criteria, enabling clean and efficient data filtering.
+2. **Readability**: It replaces the need for more complex loops and conditional statements, making the code easier to understand and maintain.
+
+### `reduce`
+
+#### Description:
+
+- **Purpose**: Executes a reducer function on each element of the array, resulting in a single output value.
+- **Syntax**: `array.reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])`
+
+#### Usage:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const sum = numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+console.log(sum) // 10
+```
+
+#### Importance:
+
+1. **Aggregation**: `reduce` is powerful for tasks that involve combining all elements of an array into a single value, such as summing numbers, counting occurrences, or flattening arrays.
+2. **Flexibility**: It can be used to implement complex operations in a functional style, reducing the need for imperative code that can be harder to follow and maintain.
+
+### Practical Benefits
+
+1. **Enhanced Functional Programming**: Mastery of these functions is a step towards adopting functional programming paradigms, which can lead to more predictable and bug-resistant code.
+2. **Code Conciseness**: They often allow for more concise and expressive code compared to traditional loops, making it easier to implement common array operations.
+3. **Readability and Maintainability**: Code that uses `map`, `filter`, and `reduce` tends to be more readable and easier to maintain, as the intention of the operations is clearly expressed through these high-level abstractions.
+4. **Performance**: While performance can vary, using these functions can sometimes lead to performance improvements due to internal optimizations in JavaScript engines.
+
+### Using map, filter, and reduce
+
+Understanding and utilizing `map`, `filter`, and `reduce` can significantly enhance your JavaScript programming skills. They are fundamental tools in the functional programming toolbox, promoting a more declarative coding style that can simplify complex data transformations and processing tasks. By mastering these functions, you can write more efficient, readable, and maintainable code.
 
 While `map`, `filter`, and `reduce` offer numerous benefits, they also have some drawbacks. Here are some cons to consider:
 
@@ -76,3 +147,7 @@ While `map`, `filter`, and `reduce` offer numerous benefits, they also have some
    const intermediate3 = intermediate2.map(transform2)
    const resultAlternative = intermediate3.reduce(reducer, initialValue)
    ```
+
+### Conclusion
+
+While `map`, `filter`, and `reduce` are powerful tools in JavaScript, they are not without their drawbacks. Being aware of their potential performance issues, readability challenges, and the need for functional programming knowledge is important. Developers should use these methods judiciously, considering the specific context and requirements of their code.
