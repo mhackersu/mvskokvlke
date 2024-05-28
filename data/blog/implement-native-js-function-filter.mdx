@@ -1,0 +1,87 @@
+---
+title: Implement Native Filter Function in JS
+date: '2024-05-27'
+tags:
+  [
+    'js',
+    'javascript',
+    'native functions',
+    'filter',
+    'higher order functions',
+    'encapsulation',
+    'abstraction',
+    'immutability',
+    'seperation of concerns',
+    'function composition',
+  ]
+draft: false
+summary: The custom `filter` function demonstrates key programming principles such as higher-order functions, encapsulation, abstraction, immutability, separation of concerns, and function composition. These principles are foundational to writing clean, maintainable, and efficient code in JavaScript and many other programming languages. This implementation of `filter` showcases how you can create reusable and modular code by leveraging these principles.
+---
+
+The provided function `filter` is a custom implementation of the array `filter` method in JavaScript. Here’s a detailed explanation of what this function does and the programming principles it utilizes:
+
+### Function Explanation
+
+```javascript
+function filter(arr, cb) {
+  var result = []
+  for (var i = 0; i < arr.length; i++) {
+    if (cb(arr[i])) result.push(arr[i])
+  }
+  return result
+}
+```
+
+#### What the Function Does:
+
+1. **Initialization**:
+
+   - `var result = [];` initializes an empty array called `result` which will store the elements that pass the test implemented by the callback function.
+
+2. **Iteration**:
+
+   - `for (var i = 0; i < arr.length; i++) {` starts a loop that iterates over each element in the input array `arr`.
+
+3. **Condition Check and Callback Application**:
+
+   - `if (cb(arr[i])) result.push(arr[i]);` applies the callback function `cb` to the current element `arr[i]`. If the callback returns `true`, the current element `arr[i]` is pushed into the `result` array.
+
+4. **Return**:
+   - `return result;` returns the `result` array after the loop completes, containing all the elements that passed the test.
+
+#### Example Usage:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const evenNumbers = filter(numbers, function (num) {
+  return num % 2 === 0
+})
+console.log(evenNumbers) // [2, 4]
+```
+
+In this example, the `filter` function is used to create an array of even numbers from the `numbers` array.
+
+### Programming Principles Utilized
+
+1. **Higher-Order Functions**:
+
+   - The `filter` function takes a function `cb` as an argument and applies this function to each element in the array to determine if it should be included in the result. This makes `filter` a higher-order function because it operates on other functions.
+
+2. **Encapsulation**:
+
+   - The function encapsulates the logic of filtering an array within a single function, hiding the iteration and condition-checking details from the user. Users only need to provide the condition logic via the callback.
+
+3. **Abstraction**:
+
+   - This implementation abstracts the process of iterating over an array and applying a condition, allowing users to focus on defining the condition they want to use for filtering.
+
+4. **Immutability**:
+
+   - The `filter` function creates a new array (`result`) and does not modify the original array `arr`. This promotes immutability, as the original data remains unchanged.
+
+5. **Separation of Concerns**:
+
+   - The logic of what condition to check for each array element (provided by the callback `cb`) is separated from the logic of how to iterate over the array and collect results. This separation makes the function more modular and easier to understand.
+
+6. **Function Composition**:
+   - The custom `filter` function facilitates function composition, allowing users to chain multiple operations in a readable and maintainable way. It can be used alongside other higher-order functions like `map` to perform complex data transformations.

@@ -1,0 +1,87 @@
+---
+title: Implement Native Map Function in JS
+date: '2024-05-27'
+tags:
+  [
+    'js',
+    'javascript',
+    'native functions',
+    'map',
+    'higher order functions',
+    'encapsulation',
+    'abstraction',
+    'immutability',
+    'seperation of concerns',
+    'function composition',
+  ]
+draft: false
+summary: The custom map function demonstrates key programming principles such as higher-order functions, encapsulation, abstraction, immutability, separation of concerns, and function composition. These principles are foundational to writing clean, maintainable, and efficient code in JavaScript and many other programming languages.
+---
+
+The provided function `map` is a custom implementation of the array `map` method in JavaScript. Here’s a detailed explanation of what this function does and the programming principles it utilizes:
+
+### Function Explanation
+
+```javascript
+function map(arr, cb) {
+  var result = []
+  for (var i = 0; i < arr.length; i++) {
+    result.push(cb(arr[i]))
+  }
+  return result
+}
+```
+
+#### What the Function Does:
+
+1. **Initialization**:
+
+   - `var result = [];` initializes an empty array called `result` which will store the transformed elements.
+
+2. **Iteration**:
+
+   - `for (var i = 0; i < arr.length; i++) {` starts a loop that iterates over each element in the input array `arr`.
+
+3. **Callback Application**:
+
+   - `result.push(cb(arr[i]));` applies the callback function `cb` to the current element `arr[i]` and pushes the result into the `result` array.
+
+4. **Return**:
+   - `return result;` returns the `result` array after the loop completes, containing all the transformed elements.
+
+#### Example Usage:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const doubled = map(numbers, function (num) {
+  return num * 2
+})
+console.log(doubled) // [2, 4, 6, 8]
+```
+
+In this example, the `map` function is used to double each element in the `numbers` array.
+
+### Programming Principles Utilized
+
+1. **Higher-Order Functions**:
+
+   - The `map` function takes a function `cb` as an argument and applies this function to each element in the array. This makes `map` a higher-order function because it operates on other functions.
+
+2. **Encapsulation**:
+
+   - The function encapsulates the logic of transforming an array within a single function, hiding the iteration details from the user. Users only need to provide the transformation logic via the callback.
+
+3. **Abstraction**:
+
+   - This implementation abstracts the process of iterating over an array and applying a transformation, allowing users to focus on what transformation they want to apply rather than how it’s applied.
+
+4. **Immutability**:
+
+   - The `map` function creates a new array (`result`) and does not modify the original array `arr`. This promotes immutability, as the original data remains unchanged.
+
+5. **Separation of Concerns**:
+
+   - The logic of what to do with each array element (provided by the callback `cb`) is separated from the logic of how to iterate over the array and collect results. This separation makes the function more modular and easier to understand.
+
+6. **Function Composition**:
+   - The custom `map` function facilitates function composition, allowing users to chain multiple transformations in a readable and maintainable way.

@@ -1,0 +1,92 @@
+---
+title: Implement Native Reduce Function in JS
+date: '2024-05-27'
+tags:
+  [
+    'js',
+    'javascript',
+    'native functions',
+    'reduce',
+    'higher order functions',
+    'encapsulation',
+    'abstraction',
+    'immutability',
+    'seperation of concerns',
+    'function composition',
+  ]
+draft: false
+summary: The custom `reduce` function demonstrates key programming principles such as higher-order functions, encapsulation, abstraction, immutability, separation of concerns, and function composition. These principles are foundational to writing clean, maintainable, and efficient code in JavaScript and many other programming languages. By understanding and utilizing these principles, developers can create more robust and flexible code.
+---
+
+The provided function `reduce` is a custom implementation of the array `reduce` method in JavaScript. Here’s a detailed explanation of what this function does and the programming principles it utilizes:
+
+### Function Explanation
+
+```javascript
+function reduce(arr, cb, init) {
+  for (var i = 0; i < arr.length; i++) {
+    init = cb(init, arr[i], i)
+  }
+  return init
+}
+```
+
+#### What the Function Does:
+
+1. **Parameters**:
+
+   - `arr`: The array to be reduced.
+   - `cb`: The callback function that is called on each element of the array.
+   - `init`: The initial value that will be used as the starting point for the reduction.
+
+2. **Iteration**:
+
+   - `for (var i = 0; i < arr.length; i++) {` starts a loop that iterates over each element in the input array `arr`.
+
+3. **Callback Application**:
+
+   - `init = cb(init, arr[i], i);` calls the callback function `cb` with three arguments: the current accumulator value (`init`), the current element of the array (`arr[i]`), and the current index (`i`). The result of this callback is assigned back to `init`.
+
+4. **Return**:
+   - `return init;` returns the final accumulated value after the loop completes.
+
+#### Example Usage:
+
+```javascript
+const numbers = [1, 2, 3, 4]
+const sum = reduce(
+  numbers,
+  function (accumulator, currentValue) {
+    return accumulator + currentValue
+  },
+  0
+)
+console.log(sum) // 10
+```
+
+In this example, the `reduce` function is used to sum all the elements in the `numbers` array, starting with an initial value of `0`.
+
+### Programming Principles Utilized
+
+1. **Higher-Order Functions**:
+
+   - The `reduce` function takes a function `cb` as an argument and applies this function to each element in the array along with an accumulator value. This makes `reduce` a higher-order function because it operates on other functions.
+
+2. **Encapsulation**:
+
+   - The function encapsulates the logic of reducing an array within a single function, hiding the iteration and accumulation details from the user. Users only need to provide the accumulation logic via the callback.
+
+3. **Abstraction**:
+
+   - This implementation abstracts the process of iterating over an array and accumulating a result, allowing users to focus on defining the accumulation logic they want to use.
+
+4. **Immutability**:
+
+   - The `reduce` function operates on a copy of the initial accumulator value (`init`) and the array elements, leaving the original array unchanged. This promotes immutability, as the original data remains unchanged.
+
+5. **Separation of Concerns**:
+
+   - The logic of how to accumulate the result (provided by the callback `cb`) is separated from the logic of how to iterate over the array and update the accumulator. This separation makes the function more modular and easier to understand.
+
+6. **Function Composition**:
+   - The custom `reduce` function facilitates function composition, allowing users to define complex reduction operations in a modular way. This is particularly useful for chaining multiple operations or combining data in various ways.
