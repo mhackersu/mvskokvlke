@@ -1,0 +1,71 @@
+---
+title: Practical Functional Programming in JS
+date: '2024-05-28'
+tags:
+  [
+    'js',
+    'javascript',
+    'higher order functions',
+    'encapsulation',
+    'abstraction',
+    'immutability',
+    'seperation of concerns',
+    'function composition',
+    'functional programming',
+  ]
+draft: false
+summary: Mastering JavaScript functions like map, filter, and reduce is crucial for anyone pursuing a career in programming, as they allow for powerful and flexible data manipulation, which is essential for building modern applications.
+---
+
+Sure! Imagine you have a big box of toy cars of different colors, and you want to do different things with them.
+
+### Object-Oriented Programming (OOP):
+
+Think of OOP like organizing your toy cars into different boxes. Each box represents a type of car, and each car in that box has similar features, like color, size, and speed.
+
+- **Class**: This is like the blueprint for a type of car. It tells you what features (color, size, speed) each car should have.
+- **Object**: This is an actual toy car. It's made using the blueprint (class) and has specific features (red car, small size, fast speed).
+- **Methods**: These are actions you can perform with the cars, like driving them or painting them.
+
+With OOP, you can easily manage and organize your toy cars because everything is grouped and has specific actions you can do with them.
+
+### Functional Programming:
+
+Functional programming is like having magic gloves that can do things with your toy cars without changing them directly. Instead of organizing cars into boxes, you use functions (like the magic gloves) to work with the cars.
+
+- **Functions**: These are like special tools that can transform, filter, or combine your toy cars.
+- **Pure Functions**: These functions don’t change the cars but create new ones based on some rules. For example, if you paint a car, you create a new painted car and leave the original one as it is.
+
+### Map, Filter, and Reduce in JavaScript:
+
+These are three powerful magic gloves (functions) in JavaScript that help you work with a collection of items (like your toy cars).
+
+- **Map**: Imagine you want to give each toy car a new feature, like adding a sticker. The map function creates a new collection of cars with stickers, without changing the original cars.
+
+  ```javascript
+  let cars = ['red', 'blue', 'green']
+  let carsWithStickers = cars.map((car) => car + ' with sticker')
+  console.log(carsWithStickers) // ["red with sticker", "blue with sticker", "green with sticker"]
+  ```
+
+- **Filter**: Suppose you want to pick out only the red cars from your collection. The filter function creates a new collection with only the red cars.
+
+  ```javascript
+  let cars = ['red', 'blue', 'green']
+  let redCars = cars.filter((car) => car === 'red')
+  console.log(redCars) // ["red"]
+  ```
+
+- **Reduce**: Imagine you want to count the total number of cars. The reduce function combines all the cars in the collection into a single value (the total count).
+
+  ```javascript
+  let cars = ['red', 'blue', 'green']
+  let totalCars = cars.reduce((count, car) => count + 1, 0)
+  console.log(totalCars) // 3
+  ```
+
+### Why These Are Important:
+
+Using OOP helps you keep your code organized and makes it easier to manage complex systems by grouping similar things together. Functional programming, especially with tools like map, filter, and reduce, lets you process and transform data efficiently without changing the original data. This makes your code cleaner, more predictable, and easier to understand.
+
+So, by mastering map, filter, and reduce in JavaScript, you're learning how to handle data in powerful and flexible ways, which is a key part of solving many programming problems!

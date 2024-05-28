@@ -1,0 +1,137 @@
+---
+title: Is a Palindrome in JS using Native Functions
+date: '2024-05-28'
+tags:
+  [
+    'js',
+    'javascript',
+    'higher order functions',
+    'algorithms',
+    'encapsulation',
+    'abstraction',
+    'immutability',
+    'seperation of concerns',
+    'function composition',
+    'functional programming',
+  ]
+draft: false
+summary: Using native functions such as map, filter, and reduce provides a more readable, concise, and maintainable solution. They leverage the principles of functional programming, enhancing code clarity and reducing the risk of errors. This approach also benefits from optimizations within the JavaScript engine, potentially leading to better performance.
+---
+
+To determine if a string is a palindrome in JavaScript using `map`, `filter`, and `reduce` functions, we need to break down the problem into steps and make use of these higher-order functions effectively.
+
+### Steps:
+
+1. **Normalize the string**: Convert it to lowercase and remove non-alphanumeric characters.
+2. **Reverse the string**: Use the `reduce` function to reverse the normalized string.
+3. **Compare the original and reversed strings**: Check if the normalized string is the same as the reversed string.
+
+Here’s how you can do it:
+
+1. **Normalize the string**: Use `filter` to remove non-alphanumeric characters.
+2. **Reverse the string**: Use `reduce` to create the reversed string.
+3. **Compare**: Check if the original normalized string matches the reversed string.
+
+### JavaScript Code:
+
+```javascript
+function isPalindrome(str) {
+  // Step 1: Normalize the string by converting it to lowercase and filtering out non-alphanumeric characters
+  const normalizedStr = str
+    .toLowerCase()
+    .split('')
+    .filter((char) => /[a-z0-9]/.test(char))
+
+  // Step 2: Reverse the normalized string using reduce
+  const reversedStr = normalizedStr.reduce((reversed, char) => char + reversed, '')
+
+  // Step 3: Compare the normalized string and the reversed string
+  return normalizedStr.join('') === reversedStr
+}
+
+// Example usage:
+console.log(isPalindrome('A man, a plan, a canal, Panama')) // true
+console.log(isPalindrome('racecar')) // true
+console.log(isPalindrome('hello')) // false
+```
+
+### Explanation:
+
+1. **Normalize the string**:
+
+   - Convert the string to lowercase: `str.toLowerCase()`.
+   - Split the string into an array of characters: `.split('')`.
+   - Filter out non-alphanumeric characters: `.filter(char => /[a-z0-9]/.test(char))`.
+
+2. **Reverse the string**:
+
+   - Use `reduce` to accumulate characters in reverse order: `.reduce((reversed, char) => char + reversed, '')`.
+
+3. **Compare the strings**:
+   - Join the normalized array back into a string and compare it to the reversed string: `normalizedStr.join('') === reversedStr`.
+
+This code handles the normalization of the input string, reversing the string, and checking if the original normalized string matches the reversed version, thus determining if the string is a palindrome.
+
+Using native functions like `map`, `filter`, and `reduce` in JavaScript offers several benefits, especially when solving problems such as checking if a string is a palindrome:
+
+### Benefits of Using Native Functions
+
+1. **Readability and Expressiveness**:
+
+   - **Declarative Approach**: Native functions enable a more declarative approach to programming. Instead of describing step-by-step how to achieve the result, you describe what you want to achieve, which makes the code more readable and easier to understand.
+   - **Intent Clarity**: Functions like `filter`, `map`, and `reduce` clearly express the intent of transforming and processing data, making it easier for others (and your future self) to understand the code quickly.
+
+2. **Functional Programming**:
+
+   - **Immutability**: Native functions often work with immutable data, meaning they do not change the original array but return new arrays or values. This helps prevent side effects, making the code more predictable and easier to debug.
+   - **Composability**: Functions like `map`, `filter`, and `reduce` can be easily composed to perform complex operations in a clean and modular way.
+
+3. **Conciseness**:
+
+   - **Less Boilerplate**: Native functions reduce the need for boilerplate code (like loops and temporary variables), leading to more concise and compact code.
+
+4. **Performance**:
+
+   - **Optimized by JavaScript Engines**: Native functions are often optimized by JavaScript engines for better performance compared to manually implemented loops.
+
+5. **Maintainability**:
+   - **Easy to Modify**: When you use higher-order functions, modifying the logic (e.g., changing the filtering criteria) is straightforward and typically involves changing only the relevant function without affecting the rest of the code.
+
+### Application to the Palindrome Problem
+
+In the context of checking if a string is a palindrome, using native functions allows you to:
+
+1. **Normalize the String**:
+
+   - `filter`: Remove unwanted characters easily by defining a filtering function.
+   - `map` (if needed): Transform characters if necessary (not used in this specific solution but can be useful in other contexts).
+
+2. **Reverse the String**:
+
+   - `reduce`: Accumulate characters in reverse order without needing to explicitly manage indexes or temporary arrays.
+
+3. **Compare Strings**:
+   - Using built-in methods like `join` makes converting arrays back to strings straightforward and clean.
+
+Here's a recap of the solution with explanations in comments:
+
+```javascript
+function isPalindrome(str) {
+  // Step 1: Normalize the string
+  const normalizedStr = str
+    .toLowerCase() // Convert to lowercase
+    .split('') // Split into characters
+    .filter((char) => /[a-z0-9]/.test(char)) // Keep only alphanumeric characters
+
+  // Step 2: Reverse the normalized string using reduce
+  const reversedStr = normalizedStr.reduce((reversed, char) => char + reversed, '') // Reverse the characters
+
+  // Step 3: Compare the normalized string and the reversed string
+  return normalizedStr.join('') === reversedStr
+}
+
+// Example usage:
+console.log(isPalindrome('A man, a plan, a canal, Panama')) // true
+console.log(isPalindrome('racecar')) // true
+console.log(isPalindrome('hello')) // false
+```
