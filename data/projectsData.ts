@@ -18,7 +18,7 @@ const projectsData: Project[] = [
     description: `Computer science curriculum for state-sponsored young-adults in foster care to
     have access to learn the basics of computer science and programming.`,
     imgSrc: '/static/images/foster-cs.png',
-    href: 'https://fostercs.wpengine.com/',
+    href: 'https://fostercs.github.io/',
   },
 ]
 
