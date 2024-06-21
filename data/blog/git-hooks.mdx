@@ -1,0 +1,132 @@
+---
+title: Accelerate Your Development Process with Git Hooks
+date: '2024-06-21'
+tags: ['git', 'hooks', 'accelerate', 'ci']
+draft: false
+summary: Git hooks are powerful tools that can significantly enhance your development workflow by automating repetitive tasks, enforcing policies, and integrating with other systems. By leveraging Git hooks, you can ensure code quality, maintain a clean commit history, automate deployments, and protect your branches, ultimately accelerating your development process. Whether you're a solo developer or part of a large team, incorporating Git hooks into your workflow can lead to more efficient and reliable development practices.
+---
+
+### Accelerate Your Development Process with Git Hooks
+
+In the world of software development, efficiency and automation are crucial. Git, a widely-used version control system, offers a powerful feature called Git hooks that can significantly streamline your development workflow. Git hooks are scripts that run automatically at specific points in the Git lifecycle. They enable developers to automate tasks, enforce policies, and integrate with other tools, thereby accelerating the development process. In this article, we'll delve into the concept of Git hooks, explore how to set them up, and provide practical examples of how they can enhance your development efficiency.
+
+#### Understanding Git Hooks
+
+Git hooks are custom scripts that trigger actions at various stages of the Git workflow. These hooks can be client-side (running on individual developer machines) or server-side (running on the Git server). Client-side hooks include actions like committing and merging, while server-side hooks deal with network operations such as receiving pushed commits.
+
+##### Types of Git Hooks
+
+1. **Pre-commit:** Runs before a commit is finalized. Ideal for code quality checks, such as linting or running tests.
+2. **Prepare-commit-msg:** Modifies the commit message before the commit editor is displayed.
+3. **Commit-msg:** Validates or modifies the commit message before it is recorded.
+4. **Post-commit:** Executes after a commit has been recorded, useful for notifications or logging.
+5. **Pre-push:** Runs before pushing to a remote repository, useful for running tests or verifying branch policies.
+6. **Pre-receive:** Executes on the server before accepting a push, can enforce repository policies.
+7. **Post-receive:** Runs after the server accepts a push, often used for deploying updates or notifying teams.
+
+#### Setting Up Git Hooks
+
+Setting up Git hooks involves creating executable scripts in the `.git/hooks` directory of your repository. Here's a basic example of setting up a pre-commit hook:
+
+1. **Navigate to the Hooks Directory:**
+
+   ```bash
+   cd .git/hooks
+   ```
+
+2. **Create the Pre-commit Script:**
+
+   ```bash
+   touch pre-commit
+   chmod +x pre-commit
+   ```
+
+3. **Edit the Script:**
+   ```bash
+   #!/bin/sh
+   # Example pre-commit hook to run ESLint
+   eslint . --fix
+   if [ $? -ne 0 ]; then
+       echo "Linting failed. Please fix the errors before committing."
+       exit 1
+   fi
+   ```
+
+This simple script runs ESLint before each commit and prevents the commit if linting errors are found.
+
+#### Examples of Git Hooks in Action
+
+##### 1. **Enforcing Code Quality with Pre-commit Hooks**
+
+Pre-commit hooks are excellent for maintaining code quality by running static analysis tools. For instance, you can set up a pre-commit hook to run tests and linters:
+
+```bash
+#!/bin/sh
+# Run tests
+npm test
+if [ $? -ne 0 ]; then
+    echo "Tests failed. Commit aborted."
+    exit 1
+fi
+
+# Run linter
+eslint . --fix
+if [ $? -ne 0 ]; then
+    echo "Linting failed. Commit aborted."
+    exit 1
+fi
+```
+
+By automating these checks, you ensure that only high-quality code gets committed, reducing the likelihood of introducing bugs.
+
+##### 2. **Standardizing Commit Messages with Commit-msg Hooks**
+
+Consistent commit messages are vital for maintaining a clear project history. A commit-msg hook can enforce a specific format:
+
+```bash
+#!/bin/sh
+# Ensure commit message follows the pattern: [JIRA-1234] Commit message
+commit_msg=$(cat $1)
+if ! echo "$commit_msg" | grep -qE '^\[JIRA-[0-9]+\] .+'; then
+    echo "Commit message must follow the pattern: [JIRA-1234] Commit message"
+    exit 1
+fi
+```
+
+This script checks if the commit message starts with a JIRA ticket number and a descriptive message, helping to keep your commit history organized.
+
+##### 3. **Automating Deployment with Post-receive Hooks**
+
+Post-receive hooks can be used for automatic deployments. When code is pushed to the repository, this hook can trigger a deployment script:
+
+```bash
+#!/bin/sh
+# Post-receive hook to deploy code
+DEPLOY_DIR="/var/www/myapp"
+GIT_DIR="/path/to/repo.git"
+
+cd $DEPLOY_DIR || exit
+unset GIT_DIR
+git pull origin main
+./deploy.sh
+```
+
+This script navigates to the deployment directory, pulls the latest changes, and runs a deployment script, ensuring your application is always up-to-date with the latest code.
+
+##### 4. **Preventing Pushes to Protected Branches with Pre-push Hooks**
+
+To enforce branch policies, a pre-push hook can be used to prevent pushes to certain branches, such as the main or production branches:
+
+```bash
+#!/bin/sh
+# Pre-push hook to prevent pushing to the main branch
+protected_branch="main"
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$current_branch" = "$protected_branch" ]; then
+    echo "Pushing to the main branch is not allowed."
+    exit 1
+fi
+```
+
+This script checks if the current branch is the protected branch and aborts the push if it is, helping to safeguard your main codebase.
