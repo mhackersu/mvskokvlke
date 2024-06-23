@@ -1,0 +1,81 @@
+---
+title: Giving Abilities to Robots using Go
+date: '2025-06-23'
+tags: ['go', 'method sets', 'abilities', 'robots']
+draft: false
+summary: In Go, understanding method sets helps you know how to properly give your robots (or any other objects) their abilities and how to use those abilities correctly. It’s like knowing which remote control works with which toy! So, your toy robots (structs) can do different things (methods), and whether you give them abilities directly or through a special key (pointer) changes how you can use those abilities.
+---
+
+### Why It Matters
+
+Let's imagine you have a bunch of toy robots, and each robot can do different things like walk, talk, or dance. In Go, which is a programming language, we can make these robots and tell them what they can do by using something called "method sets."
+
+### Robots and Their Abilities
+
+1. **Robot Struct**: First, we create a basic robot model. Think of this like a blueprint for building robots.
+
+```go
+type Robot struct {
+    name string
+}
+```
+
+2. **Methods**: Methods are like the abilities we give to our robots. For example, walking and talking.
+
+### Giving Abilities to Robots
+
+Now, let's give our robots the ability to walk and talk by writing methods.
+
+```go
+func (r Robot) Walk() {
+    fmt.Println(r.name, "is walking!")
+}
+
+func (r Robot) Talk() {
+    fmt.Println(r.name, "says hello!")
+}
+```
+
+### Method Sets
+
+A method set is like a list of all the abilities a particular robot has. There are two kinds of method sets based on how we give robots their abilities:
+
+1. **Value Receiver Method Set**: This is when we give abilities to a robot itself.
+
+```go
+func (r Robot) Dance() {
+    fmt.Println(r.name, "is dancing!")
+}
+```
+
+With value receiver methods, you can call them on both robot objects and pointers to robot objects.
+
+```go
+robot1 := Robot{name: "Robo1"}
+robot1.Walk()  // Robo1 can walk
+robot1.Dance() // Robo1 can dance
+
+robotPtr := &robot1
+robotPtr.Walk()  // Robo1 can still walk
+robotPtr.Dance() // Robo1 can still dance
+```
+
+2. **Pointer Receiver Method Set**: This is when we give abilities to the robot through a pointer. A pointer is like a special key that points directly to the robot, making changes directly to it.
+
+```go
+func (r *Robot) Sing() {
+    fmt.Println(r.name, "is singing!")
+}
+```
+
+With pointer receiver methods, you can only call them on pointers to robot objects.
+
+```go
+robot1.Sing()   // This won't work
+robotPtr.Sing() // This will work, Robo1 can sing
+```
+
+### Summary
+
+- **Value Receiver Methods**: Abilities (methods) that the robot itself can use. Can be called on both robots and their pointers.
+- **Pointer Receiver Methods**: Abilities (methods) that need a special key (pointer) to work. Can only be called on pointers to robots.
