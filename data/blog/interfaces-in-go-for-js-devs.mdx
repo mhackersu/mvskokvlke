@@ -1,0 +1,233 @@
+---
+title: Interfaces in Go for JavaScript Developers
+date: '2024-06-23'
+tags: ['go', 'js', 'interfaces']
+draft: false
+summary: Go's interface system is powerful and provides a way to define and work with polymorphic types. This tutorial covered:
+
+- Basic interface definition and implementation
+- Interface embedding
+- Empty interfaces
+- Type assertions and type switches
+
+In comparison, JavaScript achieves similar behavior through its dynamic typing and flexible object-oriented features, even though it lacks explicit interface definitions. Understanding these concepts in Go can significantly enhance your ability to design robust and flexible programs.
+---
+
+## Introduction
+
+Interfaces in Go can be a bit challenging to understand if you're coming from JavaScript, which has a more dynamic and flexible approach to types and object-oriented programming. This tutorial will provide a comprehensive overview of interfaces in Go and demonstrate how you can achieve similar functionality in JavaScript.
+
+## What is an Interface?
+
+In Go, an interface is a type that specifies a set of method signatures. A type implements an interface by implementing the methods defined by the interface. This allows Go to achieve polymorphism, where different types can be treated the same way if they implement the same interface.
+
+### Basic Example
+
+Let's start with a basic example in Go. Suppose we have an interface `Speaker` with a single method `Speak()`:
+
+```go
+package main
+
+import "fmt"
+
+// Speaker interface
+type Speaker interface {
+    Speak()
+}
+
+// Dog struct
+type Dog struct {
+    Name string
+}
+
+// Implementing Speak method for Dog
+func (d Dog) Speak() {
+    fmt.Println("Woof! My name is", d.Name)
+}
+
+// Cat struct
+type Cat struct {
+    Name string
+}
+
+// Implementing Speak method for Cat
+func (c Cat) Speak() {
+    fmt.Println("Meow! My name is", c.Name)
+}
+
+func main() {
+    var s Speaker
+
+    d := Dog{Name: "Buddy"}
+    c := Cat{Name: "Whiskers"}
+
+    s = d
+    s.Speak()
+
+    s = c
+    s.Speak()
+}
+```
+
+In this example:
+
+1. We define a `Speaker` interface with a single method `Speak()`.
+2. We create two structs, `Dog` and `Cat`, each with a `Name` field.
+3. We implement the `Speak()` method for both `Dog` and `Cat`.
+4. In the `main` function, we create instances of `Dog` and `Cat`, assign them to the `Speaker` interface, and call the `Speak()` method.
+
+### Similar Functionality in JavaScript
+
+In JavaScript, there are no explicit interfaces, but we can achieve similar behavior using objects and functions.
+
+```javascript
+class Dog {
+  constructor(name) {
+    this.name = name
+  }
+
+  speak() {
+    console.log(`Woof! My name is ${this.name}`)
+  }
+}
+
+class Cat {
+  constructor(name) {
+    this.name = name
+  }
+
+  speak() {
+    console.log(`Meow! My name is ${this.name}`)
+  }
+}
+
+const animals = []
+
+animals.push(new Dog('Buddy'))
+animals.push(new Cat('Whiskers'))
+
+animals.forEach((animal) => {
+  animal.speak()
+})
+```
+
+In this example:
+
+1. We define two classes, `Dog` and `Cat`, each with a constructor to initialize the `name` and a `speak()` method.
+2. We create instances of `Dog` and `Cat`, store them in an array, and call their `speak()` method.
+
+## Advanced Interface Concepts
+
+### Interface Embedding
+
+Go allows interfaces to embed other interfaces, effectively creating a new interface that includes the methods of the embedded interfaces.
+
+```go
+package main
+
+import "fmt"
+
+// Speaker interface
+type Speaker interface {
+    Speak()
+}
+
+// Mover interface
+type Mover interface {
+    Move()
+}
+
+// Animal interface embeds both Speaker and Mover interfaces
+type Animal interface {
+    Speaker
+    Mover
+}
+
+// Dog struct implements both Speak and Move methods
+type Dog struct {
+    Name string
+}
+
+func (d Dog) Speak() {
+    fmt.Println("Woof! My name is", d.Name)
+}
+
+func (d Dog) Move() {
+    fmt.Println(d.Name, "is running")
+}
+
+func main() {
+    var a Animal
+
+    d := Dog{Name: "Buddy"}
+    a = d
+
+    a.Speak()
+    a.Move()
+}
+```
+
+### Empty Interface
+
+The empty interface `interface{}` can hold values of any type. It’s similar to JavaScript's dynamic typing where a variable can hold any value.
+
+```go
+package main
+
+import "fmt"
+
+func PrintValue(v interface{}) {
+    fmt.Println(v)
+}
+
+func main() {
+    PrintValue(42)
+    PrintValue("hello")
+    PrintValue(true)
+}
+```
+
+### Type Assertion
+
+Type assertion is used to extract the underlying value of an interface.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    var i interface{} = "hello"
+
+    // Type assertion to extract the string value
+    s := i.(string)
+    fmt.Println(s)
+}
+```
+
+### Type Switch
+
+Type switch is used to handle different types stored in an interface.
+
+```go
+package main
+
+import "fmt"
+
+func Describe(i interface{}) {
+    switch v := i.(type) {
+    case int:
+        fmt.Println("Integer:", v)
+    case string:
+        fmt.Println("String:", v)
+    default:
+        fmt.Println("Unknown type")
+    }
+}
+
+func main() {
+    Describe(42)
+    Describe("hello")
+    Describe(true)
+}
+```
