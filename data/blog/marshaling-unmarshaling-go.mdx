@@ -1,0 +1,191 @@
+---
+title: Marshaling and Unmarshaling in Go
+date: '2024-06-23'
+tags: ['go', 'json', 'xml', 'data']
+draft: false
+summary: This tutorial covered the basics of marshaling and unmarshaling JSON and XML in Go. By defining the appropriate structs and using the `encoding/json` and `encoding/xml` packages, you can easily convert between Go objects and these data formats. For more complex data structures, simply nest structs within each other as demonstrated in the examples.
+---
+
+Tutorial for marshaling and unmarshaling in Go, focusing on both JSON and XML data formats.
+
+### Marshaling and Unmarshaling in Go
+
+Marshaling is the process of converting a Go object into a data format such as JSON or XML. Unmarshaling is the reverse process, converting data from formats like JSON or XML back into a Go object.
+
+### 1. JSON Marshaling and Unmarshaling
+
+#### Import the necessary package
+
+```go
+import (
+    "encoding/json"
+    "fmt"
+)
+```
+
+#### Define a Go struct
+
+```go
+type Person struct {
+    Name   string `json:"name"`
+    Age    int    `json:"age"`
+    Email  string `json:"email"`
+}
+```
+
+#### Marshaling a Go struct to JSON
+
+```go
+func main() {
+    person := Person{
+        Name:  "John Doe",
+        Age:   30,
+        Email: "john.doe@example.com",
+    }
+
+    jsonData, err := json.Marshal(person)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    fmt.Println(string(jsonData))
+}
+```
+
+#### Unmarshaling JSON to a Go struct
+
+```go
+func main() {
+    jsonString := `{"name":"Jane Doe","age":25,"email":"jane.doe@example.com"}`
+
+    var person Person
+    err := json.Unmarshal([]byte(jsonString), &person)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    fmt.Printf("%+v\n", person)
+}
+```
+
+### 2. XML Marshaling and Unmarshaling
+
+#### Import the necessary package
+
+```go
+import (
+    "encoding/xml"
+    "fmt"
+)
+```
+
+#### Define a Go struct
+
+```go
+type Person struct {
+    Name   string `xml:"name"`
+    Age    int    `xml:"age"`
+    Email  string `xml:"email"`
+}
+```
+
+#### Marshaling a Go struct to XML
+
+```go
+func main() {
+    person := Person{
+        Name:  "John Doe",
+        Age:   30,
+        Email: "john.doe@example.com",
+    }
+
+    xmlData, err := xml.Marshal(person)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    fmt.Println(string(xmlData))
+}
+```
+
+#### Unmarshaling XML to a Go struct
+
+```go
+func main() {
+    xmlString := `<Person><name>Jane Doe</name><age>25</age><email>jane.doe@example.com</email></Person>`
+
+    var person Person
+    err := xml.Unmarshal([]byte(xmlString), &person)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    fmt.Printf("%+v\n", person)
+}
+```
+
+### Handling Nested Structures
+
+If your JSON or XML data contains nested objects, you need to define nested structs in Go.
+
+#### JSON Example with Nested Structs
+
+```go
+type Address struct {
+    Street string `json:"street"`
+    City   string `json:"city"`
+}
+
+type Person struct {
+    Name    string  `json:"name"`
+    Age     int     `json:"age"`
+    Email   string  `json:"email"`
+    Address Address `json:"address"`
+}
+
+func main() {
+    jsonString := `{"name":"Jane Doe","age":25,"email":"jane.doe@example.com","address":{"street":"123 Main St","city":"Somewhere"}}`
+
+    var person Person
+    err := json.Unmarshal([]byte(jsonString), &person)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    fmt.Printf("%+v\n", person)
+}
+```
+
+#### XML Example with Nested Structs
+
+```go
+type Address struct {
+    Street string `xml:"street"`
+    City   string `xml:"city"`
+}
+
+type Person struct {
+    Name    string  `xml:"name"`
+    Age     int     `xml:"age"`
+    Email   string  `xml:"email"`
+    Address Address `xml:"address"`
+}
+
+func main() {
+    xmlString := `<Person><name>Jane Doe</name><age>25</age><email>jane.doe@example.com</email><address><street>123 Main St</street><city>Somewhere</city></address></Person>`
+
+    var person Person
+    err := xml.Unmarshal([]byte(xmlString), &person)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    fmt.Printf("%+v\n", person)
+}
+```
