@@ -1,0 +1,189 @@
+---
+title: Debugging in Go
+date: '2024-06-23'
+tags: ['syntax', 'logic', 'errors', 'debugging', 'go']
+draft: false
+summary: The code snippet attempts to define an interface, a struct, and some methods. However, due to several syntactical and logical errors, it doesn't compile or run correctly. The corrected version fixes these issues and demonstrates how to properly define and use interfaces and methods in Go.
+---
+
+```
+
+Can you spot the errors?
+
+package main
+
+type ThatThing interface {
+    Print(...string)
+}
+
+type Thing struct {
+    Name string
+    token string
+}
+
+func NewThing(params ...string)(*ThatThing){
+    return &Thing {
+        Name: params.Name,
+        token: params.Token,
+    }
+}
+
+func (datThing *Thing) Print(...string) {
+    fmt.Println(datThing.Name)
+    fom.Println(...string)
+}
+
+func (datThing *Thing) Print2(...string) {
+    fmt.Println(datThing.Name)
+    fmt.Println(...string)
+}
+
+func (datThing *Thing) print(...string) {
+    fmt.Println(datThing.Name)
+    fmt.Println(...string)
+}
+
+t.Print("whatever")
+Thing.Print2()
+
+```
+
+The provided Go code snippet contains several issues and misunderstandings. I'll explain the code's structure, its intended functionality, and the errors present.
+
+### Code Analysis
+
+#### Package Declaration
+
+```go
+package main
+```
+
+This line declares the main package, which is the starting point for a Go program.
+
+#### Interface Definition
+
+```go
+type ThatThing interface {
+    Print(...string)
+}
+```
+
+The `ThatThing` interface is defined with a single method `Print` that takes a variadic number of strings (`...string`).
+
+#### Struct Definition
+
+```go
+type Thing struct {
+    Name  string
+    token string
+}
+```
+
+The `Thing` struct is defined with two fields: `Name` and `token`.
+
+#### Constructor Function
+
+```go
+func NewThing(params ...string) (*ThatThing) {
+    return &Thing {
+        Name:  params.Name,
+        token: params.Token,
+    }
+}
+```
+
+The `NewThing` function is supposed to return a pointer to a `ThatThing` interface. However, there are several issues here:
+
+- The return type should be `*Thing` instead of `*ThatThing` since it returns a `Thing` struct.
+- The way it tries to access `params.Name` and `params.Token` is incorrect. `params` is a slice of strings, not a struct.
+
+#### Method Implementations
+
+```go
+func (datThing *Thing) Print(...string) {
+    fmt.Println(datThing.Name)
+    fmt.Println(...string)
+}
+
+func (datThing *Thing) Print2(...string) {
+    fmt.Println(datThing.Name)
+    fmt.Println(...string)
+}
+
+func (datThing *Thing) print(...string) {
+    fmt.Println(datThing.Name)
+    fmt.Println(...string)
+}
+```
+
+- The `Print` method matches the `ThatThing` interface. However, the use of `fmt.Println(...string)` is incorrect and should be `fmt.Println(strings...)`.
+- The `Print2` and `print` methods are similar, but they are not part of the `ThatThing` interface.
+- Only exported methods (starting with an uppercase letter) can be part of an interface. `print` with a lowercase letter cannot fulfill the `ThatThing` interface.
+
+#### Method Calls
+
+```go
+t.Print("whatever")
+Thing.Print2()
+```
+
+- `t.Print("whatever")`: This call is incorrect as `t` is not defined.
+- `Thing.Print2()`: This call is incorrect as `Thing` is a type, not an instance.
+
+### Corrected Code
+
+Here's the corrected version of the code:
+
+```go
+package main
+
+import (
+    "fmt"
+)
+
+type ThatThing interface {
+    Print(...string)
+}
+
+type Thing struct {
+    Name  string
+    token string
+}
+
+func NewThing(params ...string) *Thing {
+    return &Thing{
+        Name:  params[0],
+        token: params[1],
+    }
+}
+
+func (datThing *Thing) Print(strings ...string) {
+    fmt.Println(datThing.Name)
+    fmt.Println(strings...)
+}
+
+func (datThing *Thing) Print2(strings ...string) {
+    fmt.Println(datThing.Name)
+    fmt.Println(strings...)
+}
+
+func (datThing *Thing) print(strings ...string) {
+    fmt.Println(datThing.Name)
+    fmt.Println(strings...)
+}
+
+func main() {
+    t := NewThing("name1", "token1")
+    t.Print("whatever")
+    t.Print2("another", "test")
+    // t.print is not accessible here as it is unexported
+}
+```
+
+### Key Points and Fixes
+
+1. **Correct Function Return Type**: The `NewThing` function now correctly returns a `*Thing`.
+2. **Parameter Handling**: The parameters are accessed correctly from the `params` slice.
+3. **Variadic Parameters in Print Functions**: Correctly passing the variadic parameters to `fmt.Println`.
+4. **Instance Method Calls**: Method calls are now done on an instance of `Thing`, not on the type itself.
+5. **Unexported Method**: The `print` method is unexported and not used outside its package.
