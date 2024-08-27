@@ -1,0 +1,83 @@
+---
+title: K - uber - nete - s
+date: '2024-08-27'
+tags: ['kubernetes', 'k8s', 'kates']
+draft: false
+summary: Kubernetes is a "container orchestration platform". This effectively means taking your containers (everyone's heard of Docker by now, right?) and choosing which machine out of a group of them to run that container on.
+---
+
+# Kubernetes aka "kates"
+
+Normally when people talk about either Kubernetes or K8s, they are talking about the original upstream project, designed as a really highly available and hugely scalable platform by Google.
+
+## Production-readiness
+
+- Separate your masters from your nodes - your masters run the control plane and your nodes run your workload - and never the twain shall meet.
+- Run etcd (the database for your Kubernetes state) on a separate cluster to ensure it can handle the load.
+- Ideally have separate Ingress nodes so they can handle the incoming traffic easily, even if some of the underly nodes are slammed busy.
+
+- 3 x K8s masters
+- 3 x etcd
+- 2 x Ingress
+- n x nodes
+
+## Developer tools
+
+- Minikube
+
+## Debug issues in Kubernetes
+
+Debugging issues in Kubernetes can be difficult and debugging always begins with diagnosing the problem. Finding the information you need to diagnose a failing Deployment or Pod isn't obvious.
+If a YAML file applies without error then your app should work, right? Not necessarily, the YAML could be valid but the configuration or image name or any of dozens of other things could be awry.
+Let's look at some common errors and techniques to diagnose issues with your Pods.
+
+### Cluster status checks
+
+First, checking the status of your cluster components is helpful if your problems aren't isolated to a single Pod or Deployment:
+
+```
+kubectl get componentstatus
+NAME                 STATUS    MESSAGE             ERROR
+scheduler            Healthy   ok  controller-manager   Healthy   ok  etcd-0               Healthy   {"health":"true"}
+```
+
+An issue with any of those components can cause issues across your entire cluster. Cluster components can fail for many reasons, from a failed VM to network issues between nodes to corrupt etcd data. The Kubernetes documentation does a good job covering these issues and possible mitigations.
+
+### Basic Deployment and Pod status checks
+
+#### Check the status of your Deployments:
+
+```
+kubectl get deployments    NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+test                    0/1     1            0           29s
+```
+
+The test Deployment seems to have a problem as its Pod is not ready. Check the Pod's status next:
+
+```
+kubectl get pods    NAME                                     READY   STATUS             RESTARTS   AGE
+test-bdcfc6876-rs4nw                     0/1     ImagePullBackOff   0          29s
+```
+
+The Pod has an ImagePullBackOff status.
+
+This particular error means Kubernetes could not retrieve the container image for some reason: the name was misspelled, the specified tag doesn't exist, or the repository is private and Kubernetes doesn't have access.
+
+We can see more detail by getting a description of the Pod:
+
+```
+kubectl describe pod test-bdcfc6876-rs4nw
+Name:         test-bdcfc6876-rs4nw  Namespace:    default  ...  Events:  Type     Reason   Age                    From     Message  ----     ------   ----                   ----     -------  Normal   BackOff  2s (x2 over 32s   kubelet  Back-off pulling image "docker.io/datawire/bad_image_name"  Warning  Failed   2s (x2 over 32s)  kubelet  Error: ImagePullBackOff
+```
+
+Here we see the ImagePullBackOff again and, looking at the image name, the obvious reason why it's failing.
+
+Crashing Pods
+
+Another very common error you will see when a Pod won't run is CrashLoopBackOff. Kubernetes expects a Pod to start and run continuously. This is by design so that if the app running in a Pod does crash or can't start for any reason, Kubernetes will pick up on the exit error and restart the Pod (unless different behavior is specified with the restartPolicy on the Pod spec). If this happens too many times within a set period then Kubernetes assumes there is a problem with the Pod, stops trying to restart it, and returns CrashLoopBackOff.
+
+Start a Pod with this command:
+
+`kubectl run mysql --image=mysql    pod/mysql created`
+
+Wait a moment, then check the status:
