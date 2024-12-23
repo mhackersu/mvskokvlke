@@ -1,0 +1,33 @@
+---
+title: Using GVM to manage GoLang Versions
+date: '2024-12-23'
+tags: ['gvm', 'go', 'golang']
+draft: false
+summary: The alternative to nuking your entire GOROOT and rebuilding several times.
+---
+
+# TL;DR (Just use GVM)
+
+If you are going to work with Go in any capacity, be it learning, or for development, GVM is like one of those things that increase the developer experience by a large exponent.
+
+## Installing GVM
+
+You'll need Bison, if it's not already installed
+
+`yay bison`
+
+## Install GVM
+
+`curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | bash`
+
+## Download & Set Go Version
+
+```
+gvm listall
+gvm install go1.16.15
+gvm use go1.16.15
+```
+
+## Go Forth and Conquer
+
+[How to be a Hacker](http://www.catb.org/~esr/faqs/hacker-howto.html#what_is)
