@@ -1,0 +1,131 @@
+---
+title: Compiling a Specific PostgreSQL Version Manually on Arch Linux
+date: '2024-11-23'
+tags: ['tutorial']
+draft: false
+summary: Step-by-Step Guide to Manually Compile PostgreSQL 16.4 on Arch Linux
+---
+
+For those looking to compile PostgreSQL 16.4 manually on Arch Linux, this guide outlines the process step by step. From installing dependencies to initializing the database, follow these instructions to get your PostgreSQL instance up and running.
+
+## Prerequisites
+
+Ensure your system is up-to-date:
+
+```bash
+sudo pacman -Syu
+```
+
+## 1. Install Dependencies
+
+To build PostgreSQL, you’ll need several development tools and libraries:
+
+```bash
+sudo pacman -S base-devel gcc libxml2 libxslt zlib openssl readline
+```
+
+## 2. Download Source Code
+
+Retrieve the PostgreSQL source code using `curl`:
+
+```bash
+curl -O https://ftp.postgresql.org/pub/source/v16.0/postgresql-16.4.tar.gz
+```
+
+## 3. Extract Tarball
+
+Unpack the downloaded tarball and navigate into the directory:
+
+```bash
+tar -xvzf postgresql-16.4.tar.gz
+cd postgresql-16.4
+```
+
+## 4. Compile Code
+
+Configure the build with necessary options, including SSL and XML support:
+
+```bash
+./configure --prefix=/usr/local/pgsql --with-openssl --with-libxml --with-libxslt
+```
+
+## 5. Build and Install
+
+Build the source code and install PostgreSQL:
+
+```bash
+make
+sudo make install
+```
+
+## 6. Setup the Data Directory
+
+Create a directory for PostgreSQL data:
+
+```bash
+sudo mkdir -p /var/lib/postgresql/16.4/data
+sudo chown -R $(whoami) /var/lib/postgresql/16.4
+```
+
+## 7. Create the User
+
+The `postgres` user will be created during the database initialization process.
+
+## 8. Initialize the Database
+
+Initialize the database with the following command:
+
+```bash
+/usr/local/pgsql/bin/initdb -D /var/lib/postgresql/16.4/data
+```
+
+## 9. Set Permissions
+
+Ensure the `postgres` user owns the necessary directories:
+
+```bash
+sudo chown postgres:postgres /var/lib/postgresql/16.4/data
+sudo chmod 700 /var/lib/postgresql/16.4/data
+
+sudo mkdir -p /run/postgresql
+sudo chown postgres:postgres /run/postgresql
+sudo chmod 775 /run/postgresql
+```
+
+## 10. Switch to Postgres User
+
+Log in as the `postgres` user:
+
+```bash
+sudo su - postgres
+```
+
+## 11. Process Control
+
+Start, restart, or stop the PostgreSQL server using the following commands:
+
+```bash
+/usr/local/pgsql/bin/pg_ctl -D /var/lib/postgresql/16.4/data -l /var/lib/postgresql/16.4/logfile start
+/usr/local/pgsql/bin/pg_ctl -D /var/lib/postgresql/16.4/data -l /var/lib/postgresql/16.4/logfile restart
+/usr/local/pgsql/bin/pg_ctl -D /var/lib/postgresql/16.4/data -l /var/lib/postgresql/16.4/logfile stop
+```
+
+## 12. Inspect the Service
+
+Verify the PostgreSQL process:
+
+```bash
+ps aux | grep postgres
+```
+
+## 13. Manually Stop the Service
+
+If needed, terminate the PostgreSQL process:
+
+```bash
+sudo kill -9 {pid}
+```
+
+## Conclusion
+
+Following these steps, you should now have PostgreSQL 16.4 compiled and running on your Arch Linux system. Ensure you maintain proper permissions and configurations for your database environment to operate securely and efficiently.
