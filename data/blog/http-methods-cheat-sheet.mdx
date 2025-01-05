@@ -1,0 +1,182 @@
+---
+title: HTTP Methods Cheat Sheet
+date: '2025-01-05'
+tags: ['http methods']
+draft: false
+summary: This cheat sheet should give you a quick reference when working with HTTP methods and using them in various web applications or APIs.
+---
+
+Here's a cheat sheet for HTTP methods that you can reference when working with URLs, APIs, and web development:
+
+### HTTP Methods Cheat Sheet
+
+#### 1. **GET**
+
+- **Purpose**: Retrieve data from the server.
+- **Safe and Idempotent**: GET requests should not alter the state of the server. It’s idempotent, meaning multiple identical GET requests will have the same effect.
+- **Common Use**: Fetching data or resources (e.g., web page, API data).
+
+**Example**:
+
+```http
+GET /users/123
+```
+
+#### 2. **POST**
+
+- **Purpose**: Submit data to the server to create a resource or trigger an action.
+- **Not Idempotent**: Each POST request can result in a different outcome (e.g., creating multiple resources).
+- **Common Use**: Sending form data, uploading files, creating a new resource.
+
+**Example**:
+
+```http
+POST /users
+Content-Type: application/json
+{
+  "name": "John",
+  "email": "john@example.com"
+}
+```
+
+#### 3. **PUT**
+
+- **Purpose**: Update or replace a resource on the server.
+- **Idempotent**: Multiple identical PUT requests should have the same effect.
+- **Common Use**: Replacing a resource with new data.
+
+**Example**:
+
+```http
+PUT /users/123
+Content-Type: application/json
+{
+  "name": "John",
+  "email": "newjohn@example.com"
+}
+```
+
+#### 4. **PATCH**
+
+- **Purpose**: Partially update a resource on the server.
+- **Not Idempotent**: Can be idempotent but typically not required to be.
+- **Common Use**: Updating a resource with partial information (e.g., changing just one field).
+
+**Example**:
+
+```http
+PATCH /users/123
+Content-Type: application/json
+{
+  "email": "newemail@example.com"
+}
+```
+
+#### 5. **DELETE**
+
+- **Purpose**: Remove a resource from the server.
+- **Idempotent**: Repeated DELETE requests on the same resource will have the same effect (i.e., the resource is deleted).
+- **Common Use**: Deleting a resource, such as a user or file.
+
+**Example**:
+
+```http
+DELETE /users/123
+```
+
+#### 6. **HEAD**
+
+- **Purpose**: Retrieve the headers of a resource without the body.
+- **Safe and Idempotent**: Similar to GET, but it only fetches headers and not the actual content.
+- **Common Use**: Checking metadata about a resource, such as content type or modification date.
+
+**Example**:
+
+```http
+HEAD /users/123
+```
+
+#### 7. **OPTIONS**
+
+- **Purpose**: Describe the communication options for the target resource.
+- **Safe and Idempotent**: It does not modify the resource.
+- **Common Use**: Discovering allowed methods (GET, POST, etc.) and supported features of an API endpoint.
+
+**Example**:
+
+```http
+OPTIONS /users/123
+```
+
+#### 8. **CONNECT**
+
+- **Purpose**: Establish a tunnel to the server, typically for HTTPS.
+- **Not commonly used in REST APIs**.
+- **Common Use**: Used in setting up a proxy server connection or SSL tunneling.
+
+**Example**:
+
+```http
+CONNECT example.com:443
+```
+
+#### 9. **TRACE**
+
+- **Purpose**: Perform a diagnostic trace of the path to the target resource, often used for debugging.
+- \*\*Not typically used in production environments for security reasons.
+- **Common Use**: Diagnostic tool to view request/response behavior, though not common in APIs.
+
+**Example**:
+
+```http
+TRACE /users/123
+```
+
+---
+
+### Additional Tips:
+
+- **CORS (Cross-Origin Resource Sharing)**: Certain HTTP methods (like PUT, DELETE) may require proper CORS configuration when making cross-origin requests from the browser.
+- **Content-Type**: Specify the format of the data you're sending (e.g., `application/json`, `application/x-www-form-urlencoded`, etc.).
+- **Authorization**: Many APIs require authentication tokens (e.g., JWT tokens) for methods like POST, PUT, and DELETE.
+
+### Using Methods with `<a href>` in HTML
+
+You can only use GET with the `<a>` tag in HTML. To perform other HTTP methods (POST, PUT, DELETE), you typically use JavaScript and frameworks like jQuery or fetch API.
+
+```html
+<!-- GET method (default behavior) -->
+<a href="/users/123">View User</a>
+
+<!-- POST method (using JavaScript) -->
+<form action="/users" method="POST">
+  <input type="text" name="name" placeholder="Enter Name" />
+  <button type="submit">Create User</button>
+</form>
+
+<!-- DELETE method (using JavaScript) -->
+<button onclick="deleteUser(123)">Delete User</button>
+<script>
+  function deleteUser(id) {
+    fetch(`/users/${id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then((data) => console.log('Deleted:', data))
+  }
+</script>
+```
+
+### HTTP Methods Summary Table:
+
+| Method  | Purpose                               | Idempotent | Safe | Common Use                                  |
+| ------- | ------------------------------------- | ---------- | ---- | ------------------------------------------- |
+| GET     | Retrieve data                         | Yes        | Yes  | Fetch resources (e.g., web pages, API data) |
+| POST    | Submit data to create resources       | No         | No   | Submit form data, create resources          |
+| PUT     | Replace/update resource               | Yes        | No   | Full replacement of resources               |
+| PATCH   | Partially update resource             | No         | No   | Update specific fields or properties        |
+| DELETE  | Remove resource                       | Yes        | No   | Delete resources                            |
+| HEAD    | Retrieve headers (no body)            | Yes        | Yes  | Fetch metadata (e.g., content type)         |
+| OPTIONS | Describe allowed methods for resource | Yes        | Yes  | Check allowed HTTP methods                  |
+| CONNECT | Establish a tunnel (e.g., HTTPS)      | No         | No   | Proxy connection                            |
+| TRACE   | Diagnostic trace of request path      | Yes        | Yes  | Debugging HTTP request/response             |
