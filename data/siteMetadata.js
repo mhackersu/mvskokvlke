@@ -2,8 +2,8 @@
 const siteMetadata = {
   title: 'mvskokvlke dot com',
   author: 'Mike Hacker',
-  headerTitle: 'Ethical Hacker & Indigenous Leader',
-  description: 'Discussing Web3, SaaS, & Tech',
+  headerTitle: 'Ethical Hacking & Indigenous Leadership',
+  description: 'Lifting up indigenous voices in tech.',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://www.mvskokvlke.com/',
