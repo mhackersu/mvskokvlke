@@ -8,17 +8,15 @@ interface Project {
 const projectsData: Project[] = [
   {
     title: 'BFSIO',
-    description: `A personal project where I am collecting various JS programs such as calculator, 
-    calendar, task list, and weather app, into a collection of exercises for programming curriculum.`,
+    description: `IaaS Research Collection`,
     imgSrc: '/static/images/bfsio.png',
     href: 'https://bfsio.net/',
   },
   {
-    title: 'Foster CS',
-    description: `Computer science curriculum for state-sponsored young-adults in foster care to
-    have access to learn the basics of computer science and programming.`,
+    title: 'Foster Academy',
+    description: `Foster Academy is an Online Computer Science College Prep Specifically Designed for K-12 in Foster Care.`,
     imgSrc: '/static/images/foster-cs.png',
-    href: 'https://fostercs.github.io/',
+    href: 'https://foster-academy.github.io/',
   },
 ]
 
