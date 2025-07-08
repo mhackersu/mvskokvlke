@@ -15,7 +15,7 @@ const projectsData: Project[] = [
   {
     title: 'Foster Academy',
     description: `Foster Academy is an Online Computer Science College Prep Specifically Designed for K-12 in Foster Care.`,
-    imgSrc: '/static/images/foster-cs.png',
+    imgSrc: '/static/images/foster-academy.png',
     href: 'https://foster-academy.github.io/',
   },
 ]
